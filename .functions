@@ -1,0 +1,65 @@
+#!/bin/bash
+# Functions
+## Open file in DBeaver
+ODbeaver() {
+/Applications/DBeaver.app/Contents/MacOS/dbeaver  -f $1
+}
+
+
+## create a python project
+create_python_project(){
+        project_name=$1
+        mkdir $dir_python/$project_name
+        mkdir $dir_python/$project_name/data
+        mkdir $dir_python/$project_name/config
+        mkdir $dir_python/$project_name/logs
+        touch $dir_python/$project_name/data/sampledata
+        touch $dir_python/$project_name/config/sampleconfig
+        touch $dir_python/$project_name/logs/samplelog
+        cp $dir_dotconfigs/Templates/gitignore.template $dir_python/$project_name/.gitignore
+        cp $dir_dotconfigs/Templates/publish_sh.template $dir_python/$project_name/publish.sh
+        sed -i '' 's/??project_name/'$project_name'/g' $dir_python/$project_name/publish.sh
+        cp $dir_dotconfigs/Templates/environment_yaml.template $dir_python/$project_name/config/environment.yaml
+        sed -i '' 's/??project_name/'$project_name'/g' $dir_python/$project_name/config/environment.yaml
+        cp $dir_dotconfigs/Templates/initialize_project_sh.template  $dir_python/$project_name/initialize_project.sh
+        cp $dir_dotconfigs/Templates/main_py.template $dir_python/$project_name/$project_name.py
+        touch $dir_python/$project_name/README.md
+        echo "# $project_name"  >> $dir_python/$project_name/README.md
+        conda env create -f $dir_python/$project_name/config/environment.yaml
+        source activate $project_name
+}
+
+check_git_status(){
+        # Function for checking remote repository changes
+        git_branch_var=$(git -C $HOME/dotconfigs branch --show-current)
+        if [ $git_branch_var != "master" ]
+        then
+                echo "You are working on $git_branch_var at dotconfigs directory. Do you want to change branch to master ?"
+                read answer
+                if [ "$answer" = "Y" ]
+                then
+                        git -C $HOME/dotconfigs checkout master
+                        echo "Branch has been switched."
+                elif [ "$answer" = "N" ]
+                        echo "Staying at the $git_branch_var branch."
+        fi
+        echo "Fetching remote changes" && git -C $HOME/dotconfigs fetch
+        git_status_var=$(git -C $HOME/dotconfigs status $HOME/dotconfigs | grep "Your branch is behind")
+        if [ "$git_status_var" != "" ]
+        then 
+                echo "Your dotconfigs version is behind. Do you want to update it ? [ Y / N]" 
+                read answer
+                if [ "$answer" = "Y" ]
+                then
+                        echo "Pulling origin from repository"
+                        git -C $HOME/dotconfigs pull origin
+                        echo "Last version has been pulled re-launching zsh."
+                        zsh
+                elif [ "$answer" = "N" ]
+                then
+                        echo "Skipping version update."
+                fi
+        else
+                echo "You are using last version of dotconfigs"
+        fi
+}

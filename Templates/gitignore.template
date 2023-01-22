@@ -1,0 +1,8 @@
+data/*
+config/*
+logs/*
+*__pycache__*
+*.zip*
+*.DS_Store*
+!*sample*
+!*environment*

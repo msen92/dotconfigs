@@ -1,0 +1,2 @@
+# Key bindings
+bindkey -M vicmd ^E edit-command-line

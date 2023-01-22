@@ -1,0 +1,11 @@
+import os
+import logging
+from datetime import datetime
+
+logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s',level=logging.INFO)
+
+if __name__ == '__main__':
+    # Setting working directory
+    abspath = os.path.abspath(__file__)
+    dname = os.path.dirname(abspath)
+    os.chdir(dname)

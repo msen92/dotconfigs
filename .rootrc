@@ -1,0 +1,8 @@
+# Path to your oh-my-zsh installation.
+export ZSH="$HOME/.oh-my-zsh"
+
+# Setting theme
+ZSH_THEME="bira"
+
+# Seeing history with command timestamps
+HIST_STAMPS="mm/dd/yyyy"

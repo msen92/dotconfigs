@@ -1,0 +1,32 @@
+- create:
+  - backup
+
+- defaults:
+    link:
+      relink: true
+      force: true
+
+- shell:
+  - [git submodule update --init --recursive, Installing submodules]
+  - command: if [ -f backup/.vimrc ]; then; echo ".vimrc file already backed up"; else; echo "Backing up .vimrc" && cp $HOME/.vimrc backup; fi
+    stdout: true
+    quiet: true
+  - command: if [ -f backup/.zshrc ]; then; echo ".zshrc file already backed up"; else; echo "Backing up .zshrc" && cp $HOME/.zshrc backup; fi
+    stdout: true
+    quiet: true
+  - command: echo success
+    quiet: true
+    description: Back up section completed
+  - command: read answer && bash configure.sh $answer
+    stdin: true
+    stdout: true
+    quiet: true
+    description: "Do you want to override your .zshrc and .vimrc with the repositories rc files [ Y / N ] ? No will keep your rc files same and append only the necessary lines by your choice."
+
+- clean: ['~']
+
+- link:
+    ~/.vimrc: .vimrc
+    ~/.zshrc: .zshrc
+
+

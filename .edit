@@ -1,0 +1,2 @@
+# Line for using vi key bindings in terminal
+set -o vi
