@@ -32,13 +32,13 @@ create_python_project(){
 check_git_status(){
         # Function for checking remote repository changes
         git_branch_var=$(git -C $HOME/dotconfigs branch --show-current)
-        if [ $git_branch_var != "master" ]
+        if [ $git_branch_var != "main" ]
         then
-                echo "You are working on $git_branch_var at dotconfigs directory. Do you want to change branch to master ?"
+                echo "You are working on $git_branch_var at dotconfigs directory. Do you want to change branch to main ?"
                 read answer
                 if [ "$answer" = "Y" ]
                 then
-                        git -C $HOME/dotconfigs checkout master
+                        git -C $HOME/dotconfigs checkout main
                         echo "Branch has been switched."
                 elif [ "$answer" = "N" ]
                         echo "Staying at the $git_branch_var branch."
