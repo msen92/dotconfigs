@@ -1,2 +1,4 @@
 # Key bindings
-bindkey -M vicmd ^E edit-command-line
+# bindkey -M vicmd ^E edit-command-line
+bindkey "^E" edit-command-line
+bindkey "^R" history-incremental-search-backward
